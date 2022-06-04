@@ -1,3 +1,4 @@
+#!/bin/bash
 grubtheme=$1
 grubicon=$2
 grubscreen=$3

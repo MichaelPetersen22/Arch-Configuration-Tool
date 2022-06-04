@@ -8,8 +8,7 @@ if [ -z $windowsPartition ]; then
 fi
 . ./AppInstaller/install.sh
 load _lib/scriptBin.sh
-addScriptstoBin
-setAltTab
+
 
 # Options:
 # theme: tela | vimix | stylish | whitesur
@@ -21,3 +20,4 @@ setAltTab
 
 . ./Config/configureFirefox.sh
 . ./Config/zshConfig.sh
+. ./Config/autostartConfig.sh

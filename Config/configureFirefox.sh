@@ -1,3 +1,4 @@
+#!/bin/bash
 message "Installing Firefox Configuration"
 sudo -u $username timeout 5s firefox --headless --first-startup &>/dev/null
 killall "firefox" "firefox-bin" &>/dev/null || true
