@@ -1,0 +1,4 @@
+#!/bin/bash
+yay -c
+yay -Sc
+echo "Command Completed"

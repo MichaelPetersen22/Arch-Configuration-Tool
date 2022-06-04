@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ $(logname) == "root" ]; then
+    echo $'\e[0;31m'Do not login as root$'\e[0m'
+    exit 0
+fi
+if [ $USER != "root" ]; then
+    echo $'\e[0;31m'You must run as root$'\e[0m'
+    exit 0
+fi
+pacman -S lshw --noconfirm >/dev/null
+GPU=$(lshw -c display | grep vendor)
+if [[ $GPU == *"AMD"* ]]; then
+    echo "AMD"
+elif [[ $GPU == *"Nvidia"* ]]; then
+    echo "NVIDIA"
+fi
+unset GPU
+pacman -Rscn lshw --noconfirm >/dev/null

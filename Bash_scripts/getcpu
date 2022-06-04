@@ -1,0 +1,8 @@
+#!/bin/bash
+CPU=$(grep vendor_id </proc/cpuinfo)
+if [[ $CPU == *"AMD"* ]]; then
+    echo "AMD"
+elif [[ $CPU == *"Intel"* ]]; then
+    echo "Intel"
+fi
+unset CPU

@@ -1,0 +1,7 @@
+mkinitcpio-firmware
+spotify
+protontricks
+stacer
+mailspring
+budgie-control-center
+nautilus-code

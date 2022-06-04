@@ -1,0 +1,7 @@
+amd-ucode
+firewalld
+grub-customizer
+xdg-user-dirs
+os-prober
+efibootmgr
+zsh

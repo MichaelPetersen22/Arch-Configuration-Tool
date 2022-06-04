@@ -1,0 +1,7 @@
+gdm
+budgie-desktop
+budgie-extras
+budgie-screensaver
+plank
+nautilus
+tilix

@@ -1,0 +1,40 @@
+#!/bin/bash
+showHelp() {
+    cat <<EOF
+        Usage $0 [OPTION]...
+
+
+        OPTIONS:
+        -p, --print                 Prints out dependencies that will be removed on execution of the command
+        -h, --help                  Show help
+EOF
+}
+while [[ $# -gt 0 ]]; do
+    case "${1}" in
+    -p | --print)
+        pacman -Qdtq
+        echo "Dependency Query Complete!"
+        exit 0
+        ;;
+    -h | --help)
+        showHelp
+        exit 0
+        ;;
+    *)
+        echo -e "ERROR: Unrecognized option '${1}'."
+        echo "Try $0 --help for more information"
+        exit 1
+        ;;
+    esac
+done
+if [ $(logname) == "root" ]; then
+    echo $'\e[0;31m'Do not login as root$'\e[0m'
+    exit 0
+fi
+if [ $USER != "root" ]; then
+    echo $'\e[0;31m'You must run as root$'\e[0m'
+    exit 0
+fi
+pacman -Scc
+pacman -Rsn $(pacman -Qdtq) &> /dev/null
+echo "Dependencies Removed"

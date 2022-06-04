@@ -1,0 +1,22 @@
+#!/bin/bash
+if [ $(logname) == "root" ]; then
+    echo $'\e[0;31m'Do not login as root$'\e[0m'
+    exit 0
+fi
+if [ $USER != "root" ]; then
+    echo $'\e[0;31m'You must run as root$'\e[0m'
+    exit 0
+fi
+cat <<EOF
+CAUTION!!!
+This command will reset your Arch Linux completely.
+
+
+Are you absolutely certain you wish to proceed? y/N
+EOF
+read
+if [ ${REPLY,,} == "y" ]; then
+    pacman -D --asdeps $(pacman -Qqe)
+    pacman -D --asexplicit base linux linux-firmware grub git networkmanager
+    pacman -Qtdq | pacman -Rns -
+fi

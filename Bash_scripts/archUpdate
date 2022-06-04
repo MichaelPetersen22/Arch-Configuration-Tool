@@ -1,0 +1,4 @@
+#!/bin/bash
+username=$(logname)
+pacman -Syyuu --noconfirm
+sudo -u $username yay -Syyuu --noconfirm
