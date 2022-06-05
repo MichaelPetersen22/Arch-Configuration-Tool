@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Set Alt Tab
+Comment=Fixes alt tab behaviour
+Exec=setAltTab
+Type=Application
+Terminal=false
+Hidden=false

@@ -5,4 +5,3 @@ stacer
 mailspring
 budgie-control-center
 nautilus-code
-balena-etcher
