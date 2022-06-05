@@ -2,7 +2,7 @@
 setAutostart() {
     message "Setting Applications to autostart"
     CONFIG_FILES_DIR=$1
-    AUTOSTART_DIR="${USER_DIR}/.config/autostart"
+    AUTOSTART_DIR="${USER_DIR}/.config/autostart/"
     cp -f "${CONFIG_FILES_DIR}/set-alt-tab.desktop" "${AUTOSTART_DIR}"
     cp -f "${CONFIG_FILES_DIR}/plank.desktop" "${AUTOSTART_DIR}"
     systemctl enable gdm
@@ -17,6 +17,7 @@ userDirInstall() {
     CONFIG_FILES_DIR=$1
     CONFIG_DIR="${USER_DIR}/.config"
     cp -f "${CONFIG_FILES_DIR}/user-dirs.dirs" "${CONFIG_DIR}"
+    cp -f "${CONFIG_FILES_DIR}/user-dirs.conf" /etc/xdg/
     unset CONFIG_DIR
     unset CONFIG_FILES_DIR
     progressMessage "User Directories configured"

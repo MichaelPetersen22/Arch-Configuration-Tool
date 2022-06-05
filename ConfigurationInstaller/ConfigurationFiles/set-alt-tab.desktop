@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Set Alt Tab
 Comment=Fixes alt tab behaviour
-Exec=setAltTab
+Exec=resetAltTab
 Type=Application
 Terminal=false
 Hidden=false

@@ -36,5 +36,5 @@ if [ $USER != "root" ]; then
     exit 0
 fi
 pacman -Scc
-pacman -Rsn $(pacman -Qdtq) &> /dev/null
+pacman -Rsn $(pacman -Qdtq)
 echo "Dependencies Removed"
