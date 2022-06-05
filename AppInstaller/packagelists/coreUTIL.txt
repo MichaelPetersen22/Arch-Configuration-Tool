@@ -5,3 +5,4 @@ xdg-user-dirs
 os-prober
 efibootmgr
 zsh
+gnome-keyring

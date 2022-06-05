@@ -7,6 +7,7 @@ setAutostart() {
     cp -f "${CONFIG_FILES_DIR}/plank.desktop" "${AUTOSTART_DIR}"
     systemctl enable gdm
     systemctl enable firewalld
+    systemctl enable haveged
     unset AUTOSTART_DIR
     unset CONFIG_FILES_DIR
     progressMessage "Autostart Apps set"

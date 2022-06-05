@@ -9,3 +9,4 @@ gnome-tweaks
 qbittorrent
 python-nautilus
 lazygit
+haveged
