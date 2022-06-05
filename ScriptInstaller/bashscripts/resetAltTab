@@ -1,2 +1,0 @@
-#!/bin/bash
-dconf reset /org/gnome/desktop/wm/keybindings/switch-applications
