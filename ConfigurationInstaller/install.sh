@@ -1,5 +1,6 @@
 #!/bin/bash
 cd ConfigurationInstaller/
+message "Running Configuration Installer"
 load "../_lib/configurationInstallers.sh"
 cfgPth="ConfigurationFiles"
 setAutostart "$cfgPth"
