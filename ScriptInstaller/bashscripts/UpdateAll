@@ -1,0 +1,124 @@
+#!/bin/bash
+username=$(logname)
+showHelp() {
+    cat <<EOF
+    Usage: $0 [OPTION]...
+
+
+    -d, --dual  PARTITION                       Option provided to installer tells it to set up GRUB to Dual Boot another OS and provide OS boot partition
+    -gt, --grubtheme theme icons screen         Allows user to select grub theme options
+                                                theme:          tela  | vimix | stylish | whitesur
+                                                icons:          color | white | whitesur
+                                                screen:         1080p |  2k   |   4k  
+    
+    -h, --help                                  Shows this help menu
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case "${1}" in
+    -d | --dual)
+        shift
+        dualboot='true'
+        partition=$1
+        shift
+        ;;
+    -gt | --grubtheme)
+        grubtheme='true'
+        shift
+        gtheme=$1
+        shift
+        gicons=$1
+        shift
+        gscreen=$1
+        shift
+        ;;
+    -h | --help)
+        showHelp
+        exit 0
+        ;;
+    *)
+        echo -e "ERROR: Unrecognized installation option '${1}'."
+        echo "Try $0 --help for more information"
+        exit 1
+        ;;
+    esac
+done
+
+if [ $grubtheme == 'true' ] &>/dev/null; then
+    echo "Using User Defined Grub Theme"
+    if [ ! -z $gscreen ]; then
+        if [[ ! $gtheme =~ ^("tela"|"vimix"|"stylish"|"whitesur")$ ]]; then
+            echo "Invalid Theme parameter specified"
+        fi
+        if [[ ! $gicons =~ ^("color"|"white"|"whitesur")$ ]]; then
+            echo "Invalid Icon parameter specified"
+        fi
+        if [[ ! $gscreen =~ ^("1080p"|"2k"|"4k")$ ]]; then
+            echo "Invalid Screen parameter specified"
+        fi
+    else
+        echo "Empty parameters detected!"
+    fi
+else
+    echo "No Grub theme specified, using Whitesur 1080p as default"
+    gtheme="whitesur"
+    gicons="whitesur"
+    gscreen="1080p"
+fi
+
+# updateGrub() {
+#     theme=$1
+#     icons=$2
+#     screen=$3
+#     dBoot=$4
+#     if [ $dboot == 'true' ] &>/dev/null; then
+#         message "Mounting OS boot partition"
+#         dpartition=$5
+#         umount -l --recursive /mnt
+#         mount /dev/"${dpartition}" /mnt
+#     fi
+#     cd /tmp
+#     echo "Updating Grub"
+#     sudo -u $username git clone "https://github.com/vinceliuice/grub2-themes" "Grub"
+#     cd /tmp/Grub
+#     ./install.sh -t $theme -i $icons -s $screen
+#     if [ $dboot == 'true' ] &>/dev/null; then
+#         umount -l --recursive /mnt
+#     fi
+#     echo "GRUB Updated"
+# }
+
+updateIcons() {
+    echo "Updating Icons"
+    cd /tmp
+    sudo -u $username git clone "https://github.com/vinceliuice/Tela-icon-theme" "Tela-icons"
+    cd /tmp/Tela-icons
+    ./install.sh
+    echo "Icons Updated"
+}
+
+updateTheme() {
+    echo "Updating Theme"
+    cd /tmp
+    sudo -u $username git clone "https://github.com/vinceliuice/WhiteSur-gtk-theme" "Whitesur-theme"
+    cd Whitesur-theme
+    ./install.sh -c Dark -i arch
+    echo "Theme Updated"
+}
+
+updateCursors() {
+    echo "Updating Cursors"
+    cd /tmp
+    sudo -u $username git clone "https://github.com/vinceliuice/Layan-cursors" "layan-cursors"
+    cd /tmp/layan-cursors
+    ./install.sh
+    echo "Cursors Updated"
+}
+
+# updateGrub $gtheme $gicons $gscreen $dualboot $partition
+updateIcons
+updateTheme
+updateCursors
+sudo -u $username yay -Syyuu
+pacman -Syyuu
