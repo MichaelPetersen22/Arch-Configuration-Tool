@@ -10,3 +10,4 @@ qbittorrent
 python-nautilus
 lazygit
 haveged
+neofetch
