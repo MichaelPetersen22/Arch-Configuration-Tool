@@ -89,6 +89,9 @@ grubConfigure() {
     clone "$grub2theme" "Grub-Theme"
     cd /tmp/Grub-Theme
     ./install.sh -t $grubtheme -i $grubicon -s $grubscreen
+    if [ $dboot == 'true' ] &>/dev/null; then
+        umount -l --recursive /mnt
+    fi
     unset grubtheme
     unset grubicon
     unset grubscreen
