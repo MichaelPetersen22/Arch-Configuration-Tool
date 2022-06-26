@@ -11,3 +11,4 @@ python-nautilus
 lazygit
 haveged
 neofetch
+simplescreenrecorder
