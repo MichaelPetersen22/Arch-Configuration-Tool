@@ -64,7 +64,7 @@ class Interface:
                 case 4:
                     UI.aur = UI.aurmenu()
                 case 5:
-                    UI.packagelist = UI.packagemenu()
+                    UI.packagemenu()
                 case 6:
                     UI.saveconfig()
                 case 7:
@@ -164,23 +164,30 @@ class Interface:
 
         return [aur, True]
     
+    ##TODO Refactor Package Menu and Package Enabler
     def packagemenu(UI):
-        initops = ['List Select', 'Clear']
+        initops = ['List Select', 'Package Enabler', 'Clear']
         initMenu = TerminalMenu(initops)
-        selection = initMenu.show()
-        match selection:
-            case 0:
-                pass
-            case 1:
-                return ['', False]
+        initprompt = True
+        while(initprompt):
+            selection = initMenu.show()
+            match selection:
+                case 0:
+                    initprompt = False
+                    pass
+                case 1:
+                    initprompt = UI.packageenabler()
+                    if not initprompt:
+                        return 0
+                case 2:
+                    UI.packagelist = ['', False]
+                    return 1
         prompt = True
         while(prompt):
             path = input("Please input path to package list: ")
             print ("\033[A                                                                        \033[A")
             print ("\033[A                                                                        \033[A")
             if exists(path):
-                menuops = []
-                preselected = []
                 with open(path) as apps:
                     installmode = "pacman"
                     index = 0
@@ -193,23 +200,46 @@ class Interface:
                         
                         if len(splitline) == 2 and splitline[1] == "enable":
                             enabled = True
-                            preselected.append(index)
                         else:
                             enabled = False
-                        menuops.append(splitline[0])
                         UI.packages.append([splitline[0], installmode, enabled])
                         index += 1
-                        
+                prompt = False
+                UI.packagelist = [path, True]
+            else:
+                print("File does not exist")
+            
+    def packageenabler(UI):
+        packagelist = UI.packagelist
+        if packagelist[1]:
+            menuops = []
+            preselected = []
+            index = 0
+            with open(packagelist[0]) as apps:
+                for line in apps:
+                    if line.startswith("##") or not line.strip() or line.startswith("-"):
+                        continue
+                    splitline = line.split()
+
+                    if len(splitline) == 2 and splitline[1] == "enable":
+                        preselected.append(index)
+                    menuops.append(splitline[0])
+                    index += 1
                 menu = TerminalMenu(menuops, multi_select=True, title="Select Apps to enable on startup ", preselected_entries = preselected)
                 selection = menu.show()
                 for index in selection:
                     UI.packages[index][2] = True
-                prompt = False
-                print(UI.packages)
-                return [path, True]
-            else:
-                print("File does not exist")
-            
+                return False
+        else:
+            print("No Package list provided")
+            input()
+            print ("\033[A                                                                        \033[A")
+            print ("\033[A                                                                        \033[A")
+            return True
+        pass
+
+
+
     def saveconfig(UI):
         config = {
             'dualboot': UI.dualboot,
