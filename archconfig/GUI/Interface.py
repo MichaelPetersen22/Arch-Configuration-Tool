@@ -14,6 +14,8 @@ class Interface:
     desktopenvironment = ['', False]
     displaymanager = ['', False]
     aur = ['', False]
+    packagelist = ['', False]
+    packages = []
 
 
 
@@ -42,10 +44,11 @@ class Interface:
             '[3] Desktop Environment ' + UI.desktopenvironment[0],
             '[4] Display Manager ' + UI.displaymanager[0],
             '[5] AUR Helper ' + UI.aur[0],
-            '[6] Save Configuration File',
-            '[7] Load Configuration File',
+            '[6] Package List ' + UI.packagelist[0],
+            '[7] Save Configuration File',
+            '[8] Load Configuration File',
              None,
-            '[8] Continue',
+            '[9] Continue',
             '[0] Abort']
             menu = TerminalMenu(opts, skip_empty_entries=True)
             selection = menu.show()
@@ -61,12 +64,14 @@ class Interface:
                 case 4:
                     UI.aur = UI.aurmenu()
                 case 5:
-                    UI.saveconfig()
+                    UI.packagelist = UI.packagemenu()
                 case 6:
+                    UI.saveconfig()
+                case 7:
                     UI.loadconfig()
-                case 8:
-                    prompt = False
                 case 9:
+                    prompt = False
+                case 10:
                     process("clear")
                     print("Exiting Program")
                     exit()
@@ -159,6 +164,52 @@ class Interface:
 
         return [aur, True]
     
+    def packagemenu(UI):
+        initops = ['List Select', 'Clear']
+        initMenu = TerminalMenu(initops)
+        selection = initMenu.show()
+        match selection:
+            case 0:
+                pass
+            case 1:
+                return ['', False]
+        prompt = True
+        while(prompt):
+            path = input("Please input path to package list: ")
+            print ("\033[A                                                                        \033[A")
+            print ("\033[A                                                                        \033[A")
+            if exists(path):
+                menuops = []
+                preselected = []
+                with open(path) as apps:
+                    installmode = "pacman"
+                    index = 0
+                    for line in apps:
+                        if("AUR" in line):
+                            installmode = "AUR"
+                        if line.startswith("##") or not line.strip() or line.startswith("-"):
+                            continue
+                        splitline = line.split()
+                        
+                        if len(splitline) == 2 and splitline[1] == "enable":
+                            enabled = True
+                            preselected.append(index)
+                        else:
+                            enabled = False
+                        menuops.append(splitline[0])
+                        UI.packages.append([splitline[0], installmode, enabled])
+                        index += 1
+                        
+                menu = TerminalMenu(menuops, multi_select=True, title="Select Apps to enable on startup ", preselected_entries = preselected)
+                selection = menu.show()
+                for index in selection:
+                    UI.packages[index][2] = True
+                prompt = False
+                print(UI.packages)
+                return [path, True]
+            else:
+                print("File does not exist")
+            
     def saveconfig(UI):
         config = {
             'dualboot': UI.dualboot,
@@ -189,11 +240,22 @@ class Interface:
                     UI.desktopenvironment= data['desktopenvironment']
                     UI.displaymanager= data['displaymanager']
                     UI.aur = data['aur']
-                    prompt = False
                     print("Config File Loaded")
                     input()
                     print ("\033[A                             \033[A")
                     print ("\033[A                             \033[A")
+                    prompt = False
             else:
                 print("Config File Not Found")
+
+    def properties(UI):
+        data = {
+            'dualboot': UI.dualboot,
+            'grub': UI.grub,
+            'desktopenvironment': UI.desktopenvironment,
+            'displaymanager': UI.displaymanager,
+            'aur': UI.aur
+        }
+
+        return data
         
