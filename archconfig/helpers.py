@@ -24,6 +24,3 @@ def process(cmd, silent = False):
         print(err)
     if (os.stat('log.txt').st_size == 0) :
         os.remove('log.txt')
-
-def installRequired():
-    pass
