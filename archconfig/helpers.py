@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 import subprocess, os
 
+def License():
+    print("""
+    ARCHSYSTEMCONFIGTOOL Copyright (C) 2022 Michael Petersen
+    This program comes with ABSOLUTELY NO WARRANTY
+    This is free software, and you are welcome to redistribute it
+    under certain conditions
+    """)
+
 def process(cmd, silent = False):
     try:
         cmdsplit = cmd.split()
