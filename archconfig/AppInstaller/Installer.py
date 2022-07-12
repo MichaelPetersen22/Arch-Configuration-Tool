@@ -1,2 +1,4 @@
-if __name__ == "Installer":
-    print("Installer Loaded")
+class Installer:
+
+    def __init__(install, data):
+        install.settings = data
