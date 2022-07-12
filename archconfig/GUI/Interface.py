@@ -171,6 +171,10 @@ class Interface:
         jsonconfig = json.dumps(config)
         with open('config.json', 'w') as output:
             output.write(jsonconfig)
+            print("Config File Saved")
+            input()
+            print ("\033[A                             \033[A")
+            print ("\033[A                             \033[A")
 
     def loadconfig(UI):
         prompt = True
@@ -186,6 +190,10 @@ class Interface:
                     UI.displaymanager= data['displaymanager']
                     UI.aur = data['aur']
                     prompt = False
+                    print("Config File Loaded")
+                    input()
+                    print ("\033[A                             \033[A")
+                    print ("\033[A                             \033[A")
             else:
                 print("Config File Not Found")
         
