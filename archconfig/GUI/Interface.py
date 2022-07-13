@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# TODO Refactor Pass One Required
 
 from helpers import process
 from simple_term_menu import TerminalMenu
@@ -6,8 +7,7 @@ import json
 from os.path import exists
 
 # TODO Add Error Handling
-
-
+# TODO Add Property Assignment Functions with inbuilt error handling for values that properties should not be
 class Interface:
 
     # Properties

@@ -1,0 +1,43 @@
+## Utilities
+haveged enable
+os-prober
+efibootmgr
+amd-ucode
+firewalld enable
+xdg-user-dirs
+gnome-keyring
+piper
+
+## GPU
+mesa
+xf86-video-amdgpu
+xf86-video-ati
+libva-mesa-driver
+vulkan-radeon
+
+## My Apps
+
+- Media
+steam
+lutris
+discord
+
+- Development
+lazygit
+
+- Customization
+thunderbird
+grub-customizer
+firefox
+qbittorrent
+
+neofetch
+tilix
+
+---AUR---
+visual-studio-code-bin
+mkinitcpio-firmware
+spotify
+protontricks
+stacer
+
