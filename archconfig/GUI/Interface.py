@@ -8,6 +8,7 @@ from os.path import exists
 
 # TODO Add Error Handling
 # TODO Add Property Assignment Functions with inbuilt error handling for values that properties should not be
+
 class Interface:
 
     # Properties
@@ -157,7 +158,7 @@ class Interface:
             case 1:
                 return ['', False]
 
-        aurs = ['yay', 'snap']
+        aurs = ['yay', 'pikaur', 'trizen']
         menu = TerminalMenu(aurs)
         selection = menu.show()
         aur = aurs[selection]
