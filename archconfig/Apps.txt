@@ -1,3 +1,4 @@
+---pacman---
 ## Utilities
 haveged enable
 os-prober
