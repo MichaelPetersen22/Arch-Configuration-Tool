@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 # TODO Refactor Pass One Required
 
-from cgitb import enable
 from helpers import process
 from simple_term_menu import TerminalMenu
 import json
 from os.path import exists
 
 # TODO Add Error Handling
-# TODO Add Property Assignment Functions with inbuilt error handling for values that properties should not be
-# TODO Refactor Class Properties to use dictionaries (More reliable indexing)
-
+# TODO Add Property Assignment Functions with inbuilt error handling for values that properties should not be (Enumeration)
 
 class Interface:
 
@@ -41,9 +38,9 @@ class Interface:
         },
         'Package List': {
             'Path': None or '',
-            'Use': False
-        },
-        'Packages': []
+            'Use': False,
+            'Enable Prompt' : False
+        }
     }
 
     def __init__(interface):
@@ -53,12 +50,12 @@ class Interface:
     @staticmethod
     def title():
         print(r"""
-# ░██████╗██╗░░░██╗░██████╗░█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗░
-# ██╔════╝╚██╗░██╔╝██╔════╝██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝░
-# ╚█████╗░░╚████╔╝░╚█████╗░██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗░
-# ░╚═══██╗░░╚██╔╝░░░╚═══██╗██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗
-# ██████╔╝░░░██║░░░██████╔╝╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝
-# ╚═════╝░░░░╚═╝░░░╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝░""")
+░██████╗██╗░░░██╗░██████╗░█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗░
+ ██╔════╝╚██╗░██╔╝██╔════╝██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝░
+ ╚█████╗░░╚████╔╝░╚█████╗░██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗░
+ ░╚═══██╗░░╚██╔╝░░░╚═══██╗██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗
+ ██████╔╝░░░██║░░░██████╔╝╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝
+ ╚═════╝░░░░╚═╝░░░╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝░""")
 
     def menu(interface):
         while(True):
@@ -93,7 +90,17 @@ class Interface:
                     interface.execprops['Desktop Environment'] = interface.Desktop_Environment(
                     )
                 case 3:
-                    interface.execprops['Display Manager'] = interface.Display_Manager()
+                    interface.execprops['Display Manager'] = interface.Display_Manager(
+                    )
+                case 4:
+                    interface.execprops['AUR'] = interface.AUR()
+                case 5:
+                    interface.execprops['Package List'] = interface.Package_Lists(
+                    )
+                case 6:
+                    interface.Save_Config()
+                case 7:
+                    interface.Load_Config()
                 case 9:
                     break
                 case 10:
@@ -188,8 +195,93 @@ class Interface:
         options = ['ly', 'gdm', 'budgie']
         menu = TerminalMenu(options)
         input = menu.show()
-        
+
         return {
             'Display': options[input],
             'Use': True
         }
+
+    def AUR(interface):
+        options = ['AUR Select', 'Clear']
+        menu = TerminalMenu(options)
+        input = menu.show()
+        match input:
+            case 0:
+                pass
+            case 1:
+                return {
+                    'Helper': None or '',
+                    'Use': False
+                }
+        options = ['yay', 'pikaur', 'trizen']
+        menu = TerminalMenu(options)
+        input = menu.show()
+
+        return {
+            'Helper': options[input],
+            'Use': False
+        }
+
+    def Package_Lists(interface):
+        path = input("Please input path to package list: ")
+        print(
+            "\033[A                                                                        \033[A")
+        if exists(path):
+            return {
+                'Path': path,
+                'Use': True
+            }
+        else:
+            print("File does not exist")
+            input()
+            print("\033[A                             \033[A")
+            print("\033[A                             \033[A")
+            return {
+                'Path': None or '',
+                'Use': False
+            }
+
+    def Save_Config(interface):
+        data = json.dumps(interface.execprops)
+        with open('config.json', 'w') as file:
+            file.write(data)
+            print('Config File Saved')
+            input()
+            print("\033[A                             \033[A")
+            print("\033[A                             \033[A")
+
+    def Load_Config(interface):
+        path = input("Please input path to config file: ")
+        print("\033[A                                             \033[A")
+        if exists(path):
+            with open(path) as file:
+                interface.execprops = json.load(file)
+            print("Config File Loaded")
+            input()
+            print("\033[A                             \033[A")
+            print("\033[A                             \033[A")
+        else:
+            print("Config File not found")
+            input()
+            print("\033[A                             \033[A")
+            print("\033[A                             \033[A")
+
+                # with open(path) as file:
+                #     installmode = 'pacman'
+                #     index = 0
+                #     for line in file:
+                #         if('AUR' in line):
+                #             installmode = 'AUR'
+                #         if line.startswith("#") or line.startswith("-") or not line.strip():
+                #             continue
+                #         split = line.split()
+
+                #         if len(split) == 2 and split[1] == 'enable':
+                #             enabled = True
+                #         else:
+                #             enabled = False
+
+                #         interface.execprops['Packages'].append([
+                #             split[0], installmode, enabled
+                #         ])
+                #         index += 1
